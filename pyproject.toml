@@ -1,17 +1,27 @@
 [project]
 name = "cama"
 version = "1.0.0"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
 
-[tool.poetry]
-package-mode = false
+[dependency-groups]
+dev = [
+    "sqlfluff>=4.0.4,<5",
+    "flake8>=7.3.0,<8",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.9"
-
-[tool.poetry.group.dev.dependencies]
-sqlfluff = "^4.0.4"
-flake8 = "^7.3.0"
+[tool.uv]
+package = false
+default-groups = "all"
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.9.25,<0.10.0"]
+build-backend = "uv_build"
