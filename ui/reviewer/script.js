@@ -1,17 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
     // 1. Initialize Map
-    const map = L.map('map').setView([39.9526, -75.1652], 13); // Centered on Philly
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap'
+    const map = L.map('map').setView([39.9526, -75.1652], 13);
+
+    // Professional Basemap: CartoDB Positron (Light)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 20
     }).addTo(map);
 
-    // Add a sample marker (Sesame St example from wireframe)
+    // Add a sample marker (1234 Sesame St)
     const marker = L.marker([39.9526, -75.1652]).addTo(map);
     marker.bindPopup(`
-        <strong>1234 Sesame St</strong><br>
-        Current: $275,400<br>
-        2023: $225,200<br>
-        Change: ↑ 22.3%
+    <div style="font-family: sans-serif;">
+        <strong style="font-size: 1.1rem;">1234 Sesame St</strong><br>
+        <span style="color: #666;">Current:</span> $275,400<br>
+        <span style="color: #666;">2023:</span> $225,200<br>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 8px 0;">
+        <span style="color: #d9534f; font-weight: bold;">Change: ↑ 22.3%</span>
+    </div>
     `).openPopup();
 
     // Interaction: Clicking the marker opens the detail modal
