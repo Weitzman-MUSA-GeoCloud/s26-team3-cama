@@ -6,7 +6,8 @@ SELECT
     CAST((FLOOR(SAFE_CAST(market_value AS FLOAT64) / 25000) + 1) * 25000 AS INT64) AS upper_bound,
     COUNT(*) AS property_count
 FROM `{project}.source.opa_assessments`
-WHERE market_value IS NOT NULL
+WHERE
+    market_value IS NOT NULL
     AND SAFE_CAST(market_value AS FLOAT64) > 0
 GROUP BY
     tax_year,
