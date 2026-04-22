@@ -6,9 +6,12 @@ SELECT
     COUNT(*) AS property_count
 FROM `{project}.core.core_phl_opa_assessments` AS assessments
 WHERE
-    market_value IS NOT NULL
-    AND SAFE_CAST(market_value AS FLOAT64) > 0
-    AND year = (SELECT MAX(year) FROM `{project}.core.core_phl_opa_assessments` AS assessments_max)
+    assessments.market_value IS NOT NULL
+    AND SAFE_CAST(assessments.market_value AS FLOAT64) > 0
+    AND assessments.year = (
+        SELECT MAX(assessments_max.year)
+        FROM `{project}.core.core_phl_opa_assessments` AS assessments_max
+    )
 GROUP BY
     lower_bound,
     upper_bound
