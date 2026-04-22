@@ -55,6 +55,8 @@ export default defineConfig([
     languageOptions: {
       globals: {
         ...globals.browser,
+        L: "readonly",
+        Chart: "readonly",
       },
       ecmaVersion: "latest",
       sourceType: "module",
