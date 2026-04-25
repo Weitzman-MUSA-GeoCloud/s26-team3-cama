@@ -34,7 +34,7 @@ def export_property_tile_info(request):
         # --- Load properties with geometry ---
         print("Loading opa_properties...")
         properties = read_parquet(bucket, opa_props_file, cols=[
-            "parcel_number", "the_geom", "building_code_description", "category_code_description",
+            "parcel_number", "the_geom", "building_code_description", "category_code", "category_code_description",
             "number_of_bathrooms", "number_of_bedrooms", "number_stories",
             "total_livable_area", "total_area", "year_built",
             "sale_date", "sale_price", "owner_1", "zip_code", "zoning"
@@ -44,13 +44,9 @@ def export_property_tile_info(request):
         # --- Filter residential ---
         print("Filtering residential...")
         RESIDENTIAL_CATEGORIES = [
-            "SINGLE FAMILY",
-            "MULTI FAMILY",
-            "APARTMENTS  > 4 UNITS",
-            "GARAGE - RESIDENTIAL",
-            "VACANT LAND - RESIDENTIAL",
+            "1"
         ]
-        properties = properties[properties["category_code_description"].isin(RESIDENTIAL_CATEGORIES)]
+        properties = properties[properties["category_code"].isin(RESIDENTIAL_CATEGORIES)]
         print(f"Properties after filter: {len(properties)} rows")
 
         # --- Keep only latest record per parcel in properties ---
