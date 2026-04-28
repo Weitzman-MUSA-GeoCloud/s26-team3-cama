@@ -509,7 +509,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.warn('Comparison distribution unavailable:', err.message);
     showComparisonEmptyState('ML model predictions not available yet');
   });
-});
+
   // --- 4. Shared chart helpers ---
   function formatDollar(val) {
     if (val >= 1000000) return '$' + (val / 1000000) + 'M';
