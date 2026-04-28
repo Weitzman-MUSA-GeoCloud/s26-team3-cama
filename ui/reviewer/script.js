@@ -73,8 +73,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('prop-predicted').textContent =
       props.pred_value ? '$' + props.pred_value.toLocaleString() : '—';
 
-    detailsPlaceholder.style.display = 'none';
-    propertyCard.style.display = 'block';
+    document.getElementById('details-placeholder').style.display = 'none';
+    document.querySelector('.property-card').style.display = 'block';
   });
 
   tileLayer.addTo(map);
