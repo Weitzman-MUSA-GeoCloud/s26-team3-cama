@@ -24,7 +24,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const tileUrl = 'https://storage.googleapis.com/musa5090s26-team3-public/tiles/{z}/{x}/{y}.pbf';
 
-  L.vectorGrid.protobuf(tileUrl, {
+  let selectedFeatureId = null;
+
+  const tileLayer = L.vectorGrid.protobuf(tileUrl, {
     vectorTileLayerStyles: {
       'property_tile_info': (properties) => ({
         fillColor: getValueColor(properties.market_value_2025),
@@ -39,8 +41,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     interactive: true,
     maxNativeZoom: 18,
     maxZoom: 18,
-  }).on('click', (e) => {
+    getFeatureId: (f) => f.properties.id,
+  });
+
+  tileLayer.on('click', (e) => {
     const props = e.layer.properties;
+
+    // Reset previous highlight
+    if (selectedFeatureId !== null) {
+      tileLayer.resetFeatureStyle(selectedFeatureId);
+    }
+
+    // Highlight selected property
+    selectedFeatureId = props.id;
+    tileLayer.setFeatureStyle(props.id, {
+      fillColor: '#facc15',
+      fillOpacity: 1,
+      stroke: true,
+      color: '#1e40af',
+      weight: 2,
+      opacity: 1,
+      fill: true,
+    });
 
     document.getElementById('prop-address').textContent = props.address || '—';
     document.getElementById('prop-parcel').textContent = props.parcel_id || '—';
@@ -53,7 +75,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     detailsPlaceholder.style.display = 'none';
     propertyCard.style.display = 'block';
-  }).addTo(map);
+  });
+
+  tileLayer.addTo(map);
 
   // --- 3. Property Search ---
   const detailsPlaceholder = document.getElementById('details-placeholder');
