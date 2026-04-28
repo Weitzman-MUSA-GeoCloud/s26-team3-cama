@@ -1,0 +1,12 @@
+gcloud functions deploy export-property-tile-info \
+--gen2 \
+--runtime=python311 \
+--region=us-central1 \
+--source=. \
+--entry-point=export_property_tile_info \
+--service-account='data-pipeline-user@musa5090s26-team3.iam.gserviceaccount.com' \
+--trigger-http \
+--no-allow-unauthenticated \
+--timeout=540s \
+--memory=4Gi \
+--env-vars-file=.env.yaml
