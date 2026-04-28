@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body>
     <div class="app-container">
@@ -78,25 +79,24 @@
 
             <aside class="sidebar panel analytics-panel">
                 <h2>Assessment Analytics</h2>
-                <p class="subtitle">Neighborhood vs. Citywide Distribution</p>
-                
-                <div id="chart-container-1" class="chart-card">
-                    <div class="chart-placeholder">
-                        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                        <span>Loading Value Distribution...</span>
-                        <small>Waiting for <code>/configs/</code> JSON</small>
-                    </div>
-                </div>
+                <p class="subtitle">Citywide Property Value Distribution</p>
 
-                <div id="chart-container-2" class="chart-card">
-                    <div class="chart-placeholder">
-                        <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
-                        <span>Loading Error Margin Analysis...</span>
-                    </div>
+                <div class="chart-section-header">
+                    <span class="chart-label">Tax Year Distribution</span>
+                    <select id="year-select" class="year-select"></select>
                 </div>
+                <div id="chart-container-1" class="chart-card"></div>
+
+                <div class="chart-section-header">
+                    <span class="chart-label">Current Model Assessments</span>
+                </div>
+                <div id="chart-container-2" class="chart-card"></div>
             </aside>
 
         </main>
     </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
