@@ -24,68 +24,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const tileUrl = 'https://storage.googleapis.com/musa5090s26-team3-public/tiles/{z}/{x}/{y}.pbf';
 
-  let selectedFeatureId = null;
-
-  const tileLayer = L.vectorGrid.protobuf(tileUrl, {
-    vectorTileLayerStyles: {
-      'property_tile_info': (properties) => ({
-        fillColor: getValueColor(properties.market_value_2025),
-        fillOpacity: 0.8,
-        stroke: true,
-        color: '#ffffff',
-        weight: 0.3,
-        opacity: 0.5,
-        fill: true,
-      }),
-    },
-    interactive: true,
-    maxNativeZoom: 18,
-    maxZoom: 18,
-    getFeatureId: (f) => f.properties.id,
-  });
-
-  tileLayer.on('click', (e) => {
-    const props = e.layer.properties;
-
-    // Reset previous highlight
-    if (selectedFeatureId !== null) {
-      tileLayer.resetFeatureStyle(selectedFeatureId);
-    }
-
-    // Highlight selected property
-    selectedFeatureId = props.id;
-    tileLayer.setFeatureStyle(props.id, {
-      fillColor: '#facc15',
-      fillOpacity: 1,
-      stroke: true,
-      color: '#1e40af',
-      weight: 2,
-      opacity: 1,
-      fill: true,
-    });
-
-    document.getElementById('prop-address').textContent = props.address || '—';
-    document.getElementById('prop-parcel').textContent = props.parcel_id || '—';
-    document.getElementById('prop-assessed').textContent =
-      props.market_value_2025 ? '$' + props.market_value_2025.toLocaleString() : '—';
-    document.getElementById('prop-assessed-2024').textContent =
-      props.market_value_2024 ? '$' + props.market_value_2024.toLocaleString() : '—';
-    document.getElementById('prop-predicted').textContent =
-      props.pred_value ? '$' + props.pred_value.toLocaleString() : '—';
-
-    document.getElementById('details-placeholder').style.display = 'none';
-    document.querySelector('.property-card').style.display = 'block';
-    initValuationChart(props);
-  });
-
-  tileLayer.addTo(map);
-
-  // --- 3. Property Search ---
-  const detailsPlaceholder = document.getElementById('details-placeholder');
+  // --- Property card references (needed by initValuationChart) ---
   const propertyCard = document.querySelector('.property-card');
-  const searchBtn = document.querySelector('.btn-primary');
 
-  // --- 3. Valuation History Chart (Property Card) ---
+  // --- Valuation History Chart ---
   let valuationChartInstance = null;
 
   function initValuationChart(props) {
@@ -150,10 +92,69 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
+  let selectedFeatureId = null;
+
+  const tileLayer = L.vectorGrid.protobuf(tileUrl, {
+    vectorTileLayerStyles: {
+      'property_tile_info': (properties) => ({
+        fillColor: getValueColor(properties.market_value_2025),
+        fillOpacity: 0.8,
+        stroke: true,
+        color: '#ffffff',
+        weight: 0.3,
+        opacity: 0.5,
+        fill: true,
+      }),
+    },
+    interactive: true,
+    maxNativeZoom: 18,
+    maxZoom: 18,
+    getFeatureId: (f) => f.properties.id,
+  });
+
+  tileLayer.on('click', (e) => {
+    const props = e.layer.properties;
+
+    // Reset previous highlight
+    if (selectedFeatureId !== null) {
+      tileLayer.resetFeatureStyle(selectedFeatureId);
+    }
+
+    // Highlight selected property
+    selectedFeatureId = props.id;
+    tileLayer.setFeatureStyle(props.id, {
+      fillColor: '#facc15',
+      fillOpacity: 1,
+      stroke: true,
+      color: '#1e40af',
+      weight: 2,
+      opacity: 1,
+      fill: true,
+    });
+
+    document.getElementById('prop-address').textContent = props.address || '—';
+    document.getElementById('prop-parcel').textContent = props.parcel_id || '—';
+    document.getElementById('prop-assessed').textContent =
+      props.market_value_2025 ? '$' + props.market_value_2025.toLocaleString() : '—';
+    document.getElementById('prop-assessed-2024').textContent =
+      props.market_value_2024 ? '$' + props.market_value_2024.toLocaleString() : '—';
+    document.getElementById('prop-predicted').textContent =
+      props.pred_value ? '$' + props.pred_value.toLocaleString() : '—';
+
+    document.getElementById('details-placeholder').style.display = 'none';
+    document.querySelector('.property-card').style.display = 'block';
+    initValuationChart(props);
+  });
+
+  tileLayer.addTo(map);
+
+  // --- 3. Property Search ---
+  const detailsPlaceholder = document.getElementById('details-placeholder');
+  const searchBtn = document.querySelector('.btn-primary');
+
   function showPropertyDetails() {
     detailsPlaceholder.style.display = 'none';
     propertyCard.style.display = 'block';
-    initValuationChart();
   }
 
   searchBtn.addEventListener('click', showPropertyDetails);

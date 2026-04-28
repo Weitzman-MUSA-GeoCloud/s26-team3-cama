@@ -5,7 +5,7 @@
     --brand-primary-hover: #1e3a8a;
     --brand-accent: #3b82f6;
     --bg-main: #f1f5f9;
-    --bg-surface: #ffffff;
+    --bg-surface: #fff;
     --bg-map-placeholder: #e2e8f0;
     --text-primary: #0f172a;
     --text-secondary: #475569;
@@ -89,14 +89,14 @@ body {
 .brand h1 {
     font-size: 1rem;
     font-weight: 600;
-    color: #ffffff;
+    color: #fff;
     letter-spacing: 0.01em;
     line-height: 1.2;
 }
 
 .nav-subtitle {
     font-size: 0.7rem;
-    color: rgba(255 255 255 / 60%);
+    color: rgb(255 255 255 / 60%);
     font-weight: 400;
     margin-top: 1px;
     letter-spacing: 0.01em;
@@ -312,7 +312,7 @@ body {
     position: absolute;
     bottom: 20px;
     left: 16px;
-    background: rgba(255 255 255 / 96%);
+    background: rgb(255 255 255 / 96%);
     border-radius: var(--radius-lg);
     padding: 10px 14px;
     box-shadow: var(--shadow-md);
@@ -348,7 +348,7 @@ body {
     width: 12px;
     height: 12px;
     border-radius: 3px;
-    border: 1px solid rgba(0 0 0 / 10%);
+    border: 1px solid rgb(0 0 0 / 10%);
     flex-shrink: 0;
 }
 
