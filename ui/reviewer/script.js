@@ -39,6 +39,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     interactive: true,
     maxNativeZoom: 18,
     maxZoom: 18,
+  }).on('click', (e) => {
+    const props = e.layer.properties;
+
+    document.getElementById('prop-address').textContent = props.address || '—';
+    document.getElementById('prop-parcel').textContent = props.parcel_id || '—';
+    document.getElementById('prop-assessed').textContent =
+      props.market_value_2025 ? '$' + props.market_value_2025.toLocaleString() : '—';
+    document.getElementById('prop-assessed-2024').textContent =
+      props.market_value_2024 ? '$' + props.market_value_2024.toLocaleString() : '—';
+    document.getElementById('prop-predicted').textContent =
+      props.pred_value ? '$' + props.pred_value.toLocaleString() : '—';
+
+    detailsPlaceholder.style.display = 'none';
+    propertyCard.style.display = 'block';
   }).addTo(map);
 
   // --- 3. Property Search ---
