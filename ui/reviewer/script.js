@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   mapContainer.innerHTML = '';
 
   const map = L.map('map-container').setView([39.9526, -75.1652], 12);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap contributors',
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap contributors © CARTO',
   }).addTo(map);
 
   // --- 2. Property Vector Tiles ---
