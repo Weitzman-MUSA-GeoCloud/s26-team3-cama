@@ -145,11 +145,15 @@ document.addEventListener('DOMContentLoaded', async () => {
           grid: { display: false },
           ticks: {
             callback: (val, i) => {
-              const milestones = [0, 250000, 500000, 750000, 1000000];
-              if (milestones.includes(labels[i])) return formatDollar(labels[i]);
+              const total = labels.length;
+              const step = Math.max(1, Math.floor(total / 4));
+              if (i === 0 || i === total - 1 || i % step === 0) {
+                return formatDollar(labels[i]);
+              }
               return '';
             },
             maxRotation: 0,
+            autoSkip: false,
           },
         },
       },
