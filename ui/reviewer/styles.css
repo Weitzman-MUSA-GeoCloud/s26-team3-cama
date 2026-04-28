@@ -312,7 +312,7 @@ body {
     background-color: var(--bg-surface);
     border: 1px solid var(--border-light);
     border-radius: var(--radius-lg);
-    height: 220px;
+    height: 280px;
     margin-bottom: var(--spacing-md);
     display: flex;
     align-items: center;

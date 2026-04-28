@@ -113,12 +113,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         },
         x: {
           grid: { display: false },
-          min: 0,
-          max: MAX_VALUE,
           ticks: {
             callback: (val, i) => {
-              const step = Math.floor(labels.length / 5);
-              if (i % step === 0) return formatDollar(labels[i]);
+              const milestones = [0, 250000, 500000, 750000, 1000000];
+              if (milestones.includes(labels[i])) return formatDollar(labels[i]);
               return '';
             },
             maxRotation: 0,
