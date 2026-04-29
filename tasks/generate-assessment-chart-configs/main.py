@@ -7,7 +7,7 @@ import functions_framework
 from google.cloud import bigquery, exceptions, storage
 
 
-def query_assessment_bins(project_id: str) -> list[dict]:
+def query_current_assessment_bins(project_id: str) -> list[dict]:
     client = bigquery.Client(project=project_id)
     query = """
         SELECT
@@ -64,7 +64,7 @@ def generate_assessment_chart_configs(request):
     # --- current_assessment_bins ---
     current_blob_name = "configs/current_assessment_bins.json"
     try:
-        current_rows = query_assessment_bins(project_id)
+        current_rows = query_current_assessment_bins(project_id)
     except exceptions.GoogleCloudError as e:
         logging.exception(f"BigQuery query failed for current_assessment_bins: {e}")
         errors.append("current_assessment_bins query failed")
