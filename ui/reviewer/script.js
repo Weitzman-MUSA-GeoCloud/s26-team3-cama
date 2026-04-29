@@ -150,14 +150,79 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // --- 3. Property Search ---
   const detailsPlaceholder = document.getElementById('details-placeholder');
+  const searchInput = document.getElementById('property-search');
   const searchBtn = document.querySelector('.btn-primary');
+  let searchMarker = null;
 
-  function showPropertyDetails() {
-    detailsPlaceholder.style.display = 'none';
-    propertyCard.style.display = 'block';
+  async function searchProperty() {
+    const query = searchInput.value.trim();
+    if (!query) return;
+
+    searchBtn.textContent = 'Searching…';
+    searchBtn.disabled = true;
+
+    try {
+      const safe = query.toUpperCase().replace(/'/g, "''");
+      const sql = `SELECT parcel_number, location, market_value, ST_X(the_geom) AS lng, ST_Y(the_geom) AS lat FROM opa_properties_public WHERE location ILIKE '${safe}%' LIMIT 1`;
+      const url = `https://phl.carto.com/api/v2/sql?q=${encodeURIComponent(sql)}&format=json`;
+
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (!data.rows || data.rows.length === 0) {
+        searchBtn.textContent = 'Not found';
+        setTimeout(() => {
+          searchBtn.textContent = 'Search';
+          searchBtn.disabled = false;
+        }, 1500);
+        return;
+      }
+
+      const row = data.rows[0];
+
+      // Remove previous search marker
+      if (searchMarker) map.removeLayer(searchMarker);
+
+      // Fly to property and place a marker
+      map.flyTo([row.lat, row.lng], 18);
+      searchMarker = L.circleMarker([row.lat, row.lng], {
+        radius: 10,
+        color: '#1e40af',
+        fillColor: '#facc15',
+        fillOpacity: 1,
+        weight: 3,
+      }).addTo(map);
+
+      // Populate sidebar
+      document.getElementById('prop-address').textContent = row.location || '—';
+      document.getElementById('prop-parcel').textContent = row.parcel_number || '—';
+      document.getElementById('prop-assessed').textContent =
+        row.market_value ? '$' + Number(row.market_value).toLocaleString() : '—';
+      document.getElementById('prop-assessed-2024').textContent = '—';
+      document.getElementById('prop-predicted').textContent = '—';
+
+      detailsPlaceholder.style.display = 'none';
+      propertyCard.style.display = 'block';
+      initValuationChart({ market_value_2025: row.market_value || null });
+
+    } catch (err) {
+      console.error('Search failed:', err);
+      searchBtn.textContent = 'Error';
+      setTimeout(() => {
+        searchBtn.textContent = 'Search';
+        searchBtn.disabled = false;
+      }, 1500);
+      return;
+    }
+
+    searchBtn.textContent = 'Search';
+    searchBtn.disabled = false;
   }
 
-  searchBtn.addEventListener('click', showPropertyDetails);
+  searchBtn.addEventListener('click', searchProperty);
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') searchProperty();
+  });
 
   // --- 4. Initialize Sidebar Distribution Charts (Right Panel) ---
   // Assessment Value Distribution — loads real bin data from /configs/
