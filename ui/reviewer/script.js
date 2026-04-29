@@ -51,7 +51,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     const val2024 = props && props.market_value_2024 ? props.market_value_2024 : null;
-    const val2025 = props && props.market_value_2025 ? props.market_value_2025 : null;
+    const val2025 = props && (props.market_value_2025 || props.marketValue2025)
+      ? (props.market_value_2025 || props.marketValue2025) : null;
     const valPred = props && props.pred_value ? props.pred_value : null;
 
     valuationChartInstance = new Chart(ctx, {
@@ -203,7 +204,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       detailsPlaceholder.style.display = 'none';
       propertyCard.style.display = 'block';
-      initValuationChart({ market_value_2025: row.market_value || null });
+      initValuationChart({ marketValue2025: row.market_value || null });
 
     } catch (err) {
       console.error('Search failed:', err);
